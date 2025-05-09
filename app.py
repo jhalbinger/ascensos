@@ -66,9 +66,12 @@ def predecir():
     "area": datos["area"]
 }])
 
+    probabilidad = modelo.predict_proba(entrada)[0]
+    confianza = round(max(probabilidad) * 100, 2)
     prediccion = modelo.predict(entrada)
     resultado = "Sí, este empleado podría ser ascendido" if prediccion[0] == 1 else "No, aún no parece listo"
-    return jsonify({"resultado": resultado})
+    return jsonify({"resultado": resultado,
+                    "Confianza": confianza})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
