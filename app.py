@@ -57,7 +57,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 modelo = joblib.load("modelo_ascensos.pkl")
 
-@app.route("/predecir", methods=["POST"])
+@app.route("/", methods=["POST"])
 def predecir():
     datos = request.get_json()
     entrada = [[datos["antiguedad"], datos["edad"], datos["area"]]]
