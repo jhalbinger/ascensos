@@ -60,7 +60,12 @@ modelo = joblib.load("modelo_ascensos.pkl")
 @app.route("/", methods=["POST"])
 def predecir():
     datos = request.get_json()
-    entrada = [[datos["antiguedad"], datos["edad"], datos["area"]]]
+    entrada = pd.DataFrame([{
+    "antiguedad": datos["antiguedad"],
+    "edad": datos["edad"],
+    "area": datos["area"]
+}])
+
     prediccion = modelo.predict(entrada)
     resultado = "Sí, este empleado podría ser ascendido" if prediccion[0] == 1 else "No, aún no parece listo"
     return jsonify({"resultado": resultado})
