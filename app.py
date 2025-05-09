@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 
@@ -32,31 +32,26 @@ datos = {
 # ✅ Convierto en DataFrame
 df = pd.DataFrame(datos)
 
-# ✅ Separo variables
+# ✅ Separo variables predictoras y objetivo
 X = df[["antiguedad", "edad", "area"]]
 y = df["ascendio"]
 
-# ✅ Divido en entrenamiento y prueba
+# ✅ Divido en datos de entrenamiento y prueba
 X_entrenamiento, X_prueba, y_entrenamiento, y_prueba = train_test_split(
     X, y, test_size=0.3, random_state=42
 )
 
-# ✅ Entreno modelo de regresión logística
+# ✅ Entreno modelos
 modelo_log = LogisticRegression()
 modelo_log.fit(X_entrenamiento, y_entrenamiento)
-predicciones_log = modelo_log.predict(X_prueba)
-accuracy_log = accuracy_score(predicciones_log, y_prueba)
 
-# ✅ Entreno modelo de árbol de decisión
 modelo_arbol = DecisionTreeClassifier()
 modelo_arbol.fit(X_entrenamiento, y_entrenamiento)
-predicciones_arbol = modelo_arbol.predict(X_prueba)
-accuracy_arbol = accuracy_score(predicciones_arbol, y_prueba)
 
-# ✅ Guardo modelo de árbol como el principal
+# ✅ Guardo el modelo de árbol como archivo .pkl
 joblib.dump(modelo_arbol, "modelo_ascensos.pkl")
 
-# ✅ App Flask para servir el modelo
+# ✅ Servidor Flask para exponer el modelo
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
